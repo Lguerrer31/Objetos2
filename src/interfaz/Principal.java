@@ -5,6 +5,10 @@
  */
 package interfaz;
 
+import clases.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author lguerrer17
@@ -57,8 +61,12 @@ public class Principal extends javax.swing.JFrame {
         cmbOperaciones.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         cmbOperaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Suma", "Resta", "Multiplicación", "División" }));
         jPanel1.add(cmbOperaciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 70, -1));
+
+        txtNumerador3.setEditable(false);
         jPanel1.add(txtNumerador3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, 60, -1));
         jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 60, 10));
+
+        txtDenominador3.setEditable(false);
         jPanel1.add(txtDenominador3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 60, -1));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
@@ -69,6 +77,11 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(txtDenominador2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 60, -1));
 
         cmdLimpiar.setText("Limpiar");
+        cmdLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdLimpiarActionPerformed(evt);
+            }
+        });
         jPanel1.add(cmdLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, -1, -1));
 
         cmdCalcular.setText("Calcular");
@@ -97,7 +110,46 @@ public class Principal extends javax.swing.JFrame {
     private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
         // TODO add your handling code here:
         int n1, n2, n3, d1, d2, d3;
+        Fraccionario f1, f2, f3 = null;
+        int op = cmbOperaciones.getSelectedIndex();
+
+        n1 = Integer.parseInt(txtNumerador1.getText());
+        d1 = Integer.parseInt(txtDenominador1.getText());
+        n2 = Integer.parseInt(txtNumerador2.getText());
+        d2 = Integer.parseInt(txtDenominador2.getText());
+        
+     try {
+        f1 = new Fraccionario(n1, d1);
+        f2 = new Fraccionario(n2, d2);
+
+        switch (op) {
+            case 0:
+                f3 = f1.suma(f2);
+                break;
+            case 1:
+                f3 = f1.Resta(f2);
+                break;
+
+        }
+     }  catch (DenominadorCeroException ex) {
+            Helper.mensaje(null, "No puede digitar ceros en el denominador", "Error", 2);
+        }
+
+        txtNumerador3.setText("" + f3.getNumerador());
+        txtDenominador3.setText("" + f3.getDenominador());
+
     }//GEN-LAST:event_cmdCalcularActionPerformed
+
+    private void cmdLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLimpiarActionPerformed
+        // TODO add your handling code here:
+        txtDenominador1.setText("");
+        txtNumerador2.setText("");
+        txtDenominador2.setText("");
+        txtNumerador1.setText("");
+        txtDenominador3.setText("");
+        txtNumerador3.setText("");
+        txtNumerador1.requestFocusInWindow();
+    }//GEN-LAST:event_cmdLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
